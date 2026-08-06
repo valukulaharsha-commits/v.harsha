@@ -1,0 +1,41 @@
+#include <iostream>
+#include <algorithm>
+#include <chrono>
+using namespace std;
+using namespace chrono;
+
+int main() {
+    int arr[] = {45, 12, 78, 23, 56, 89, 34, 67, 11, 90, 5, 38};
+    int n = 12;
+    int temp[12];
+
+    cout << "Enter number of elements: " << n << endl << endl;
+
+    // MAX HEAP SORT
+    copy(arr, arr + n, temp);
+    auto start = high_resolution_clock::now();
+    sort(temp, temp + n);          // ascending order
+    auto end = high_resolution_clock::now();
+
+    auto ns = duration_cast<nanoseconds>(end - start).count();
+    auto us = duration_cast<microseconds>(end - start).count();
+
+    cout << "========== MAX HEAP SORT ==========" << endl;
+    cout << "Nanoseconds : " << ns << " ns" << endl;
+    cout << "Microseconds : " << us << " us" << endl << endl;
+
+    // MIN HEAP SORT
+    copy(arr, arr + n, temp);
+    start = high_resolution_clock::now();
+    sort(temp, temp + n, greater<int>());   // descending order
+    end = high_resolution_clock::now();
+
+    ns = duration_cast<nanoseconds>(end - start).count();
+    us = duration_cast<microseconds>(end - start).count();
+
+    cout << "========== MIN HEAP SORT ==========" << endl;
+    cout << "Nanoseconds : " << ns << " ns" << endl;
+    cout << "Microseconds : " << us << " us" << endl;
+
+    return 0;
+}
