@@ -1,0 +1,67 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <chrono>
+using namespace std;
+using namespace chrono;
+
+vector<vector<int>> g;
+vector<bool> vis;
+
+void dfs(int v){
+    vis[v] = true;
+    cout << v << " ";
+    for(int x : g[v])
+        if(!vis[x]) dfs(x);
+}
+
+void bfs(int s){
+    fill(vis.begin(), vis.end(), false);
+    queue<int> q;
+    q.push(s);
+    vis[s] = true;
+    while(!q.empty()){
+        int v = q.front(); q.pop();
+        cout << v << " ";
+        for(int x : g[v])
+            if(!vis[x]){
+                vis[x] = true;
+                q.push(x);
+            }
+    }
+}
+
+int main(){
+    int V, E, u, v, start;
+    cout << "Enter number of vertices: ";
+    cin >> V;
+    cout << "Enter number of edges: ";
+    cin >> E;
+
+    g.resize(V);
+    vis.resize(V);
+
+    cout << "Enter edges (u v):\n";
+    while(E--){
+        cin >> u >> v;
+        g[u].push_back(v);
+        g[v].push_back(u);
+    }
+
+    cout << "Enter starting vertex: ";
+    cin >> start;
+
+    auto t1 = high_resolution_clock::now();
+    cout << "\nDFS Traversal: ";
+    dfs(start);
+    auto t2 = high_resolution_clock::now();
+
+    auto t3 = high_resolution_clock::now();
+    cout << "\n\nBFS Traversal: ";
+    bfs(start);
+    auto t4 = high_resolution_clock::now();
+
+    cout << "\n\nExecution Time:";
+    cout << "\nDFS: " << duration_cast<nanoseconds>(t2 - t1).count() << " ns";
+    cout << "\nBFS: " << duration_cast<nanoseconds>(t4 - t3).count() << " ns";
+}
