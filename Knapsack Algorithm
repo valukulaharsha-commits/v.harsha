@@ -1,0 +1,54 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    int n = 4;
+    int capacity = 5;
+
+    int weight[] = {2, 3, 4, 5};
+    int profit[] = {3, 4, 5, 6};
+
+    int dp[5][6] = {0};
+
+    // Dynamic Programming
+    for (int i = 1; i <= n; i++) {
+        for (int w = 1; w <= capacity; w++) {
+
+            if (weight[i - 1] <= w) {
+                dp[i][w] = max(
+                    profit[i - 1] + dp[i - 1][w - weight[i - 1]],
+                    dp[i - 1][w]
+                );
+            }
+            else {
+                dp[i][w] = dp[i - 1][w];
+            }
+        }
+    }
+
+    // Find selected items
+    int w = capacity;
+    int totalWeight = 0;
+    int totalProfit = 0;
+
+    cout << "Selected Items:" << endl;
+
+    for (int i = n; i > 0; i--) {
+        if (dp[i][w] != dp[i - 1][w]) {
+            cout << "Item " << i
+                 << " -> Weight = " << weight[i - 1]
+                 << ", Profit = " << profit[i - 1] << endl;
+
+            totalWeight += weight[i - 1];
+            totalProfit += profit[i - 1];
+
+            w -= weight[i - 1];
+        }
+    }
+
+    cout << "\nTotal Weight = " << totalWeight << endl;
+    cout << "Maximum Profit = " << totalProfit << endl;
+
+    return 0;
+}
